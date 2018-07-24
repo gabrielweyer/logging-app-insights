@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -54,6 +55,12 @@ namespace Logging.Web.Controllers
         {
             _logger.LogCritical("I'm a critical {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
             return Accepted();
+        }
+
+        [HttpGet("throw")]
+        public IActionResult Throw()
+        {
+            throw new InvalidOperationException("I'm throwing!");
         }
     }
 }
