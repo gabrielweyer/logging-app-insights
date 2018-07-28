@@ -18,42 +18,42 @@ namespace Logging.Web.Controllers
         [HttpGet("trace")]
         public IActionResult Trace()
         {
-            _logger.LogTrace("I'm a trace {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogTrace("I'm a trace {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 
         [HttpGet("debug")]
         public IActionResult Debug()
         {
-            _logger.LogDebug("I'm a debug {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogDebug("I'm a debug {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 
         [HttpGet("information")]
         public IActionResult Information()
         {
-            _logger.LogInformation("I'm an information {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogInformation("I'm an information {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 
         [HttpGet("warning")]
         public IActionResult Warning()
         {
-            _logger.LogWarning("I'm a warning {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogWarning("I'm a warning {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 
         [HttpGet("error")]
         public IActionResult Error()
         {
-            _logger.LogError("I'm an error {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogError("I'm an error {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 
         [HttpGet("critical")]
         public IActionResult Critical()
         {
-            _logger.LogCritical("I'm a critical {TraceIdentifier}", ControllerContext.HttpContext.TraceIdentifier);
+            _logger.LogCritical("I'm a critical {OperationIdFromLog}", System.Diagnostics.Activity.Current?.RootId);
             return Accepted();
         }
 

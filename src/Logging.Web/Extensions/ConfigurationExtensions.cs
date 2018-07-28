@@ -21,6 +21,13 @@ namespace Logging.Web.Extensions
                 loggerConfiguration.WriteTo.Console(serilogDefaultMinimumLevel);
             }
 
+            var applicationInsightsInstrumentationKey = configuration["ApplicationInsights:InstrumentationKey"];
+
+            if (!string.IsNullOrWhiteSpace(applicationInsightsInstrumentationKey))
+            {
+                loggerConfiguration.WriteTo.ApplicationInsightsTraces(applicationInsightsInstrumentationKey);
+            }
+
             var logger = loggerConfiguration.CreateLogger();
             Log.Logger = logger;
 

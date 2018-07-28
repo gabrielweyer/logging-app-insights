@@ -22,7 +22,7 @@ namespace Logging.Web.Middleware
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
-        public async Task Invoke(HttpContext httpContext, ILogger<RequestLoggingMiddleware> logger)
+        public async Task InvokeAsync(HttpContext httpContext, ILogger<RequestLoggingMiddleware> logger)
         {
             if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
 
@@ -33,23 +33,18 @@ namespace Logging.Web.Middleware
                 await _next(httpContext);
                 var elapsedMs = GetElapsedMilliseconds(start, Stopwatch.GetTimestamp());
 
-                var statusCode = httpContext.Response?.StatusCode;
+                var statusCode = httpContext.Response.StatusCode;
                 var level = statusCode > 499 ? LogLevel.Error : LogLevel.Information;
 
                 logger.Log(level, MessageTemplate, httpContext.Request.Method, GetPath(httpContext), statusCode,
                     elapsedMs);
             }
-            catch (Exception ex) when (LogException(httpContext, logger,
-                GetElapsedMilliseconds(start, Stopwatch.GetTimestamp()), ex))
+            catch (Exception ex)
             {
+                logger.LogError(ex, MessageTemplate, httpContext.Request.Method, GetPath(httpContext), 500, GetElapsedMilliseconds(start, Stopwatch.GetTimestamp()));
+
+                httpContext.Response.StatusCode = 500;
             }
-        }
-
-        private static bool LogException(HttpContext httpContext, ILogger logger, double elapsedMs, Exception ex)
-        {
-            logger.LogError(ex, MessageTemplate, httpContext.Request.Method, GetPath(httpContext), 500, elapsedMs);
-
-            return false;
         }
 
         private static double GetElapsedMilliseconds(long start, long stop)
