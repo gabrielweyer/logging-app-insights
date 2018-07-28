@@ -23,7 +23,7 @@ namespace Logging.Web
         {
             _logger.LogDebug("Configuring services");
 
-            services.AddConfigurableApplicationInsightsTelemetry(_configuration);
+            services.AddConfigurableApplicationInsightsTelemetry(_logger, _configuration);
 
             services
                 .AddMvc()

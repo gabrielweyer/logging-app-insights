@@ -7,7 +7,7 @@
 
 The Application Insights instrumentation key should be stored as a secret. When running locally you can leverage the [Secret Manager][secret-manager].
 
-Navigate to `src/Logging.Web/` and type:
+Navigate to `src/Logging.Web/` and run:
 
 ```posh
 dotnet user-secrets set ApplicationInsights:InstrumentationKey <instrumentation-key>
@@ -60,6 +60,33 @@ I disabled the built-in request logging by setting the `Microsoft` minimum level
 - Emit a single `Information` event when the request completes instead of two (one at the beginning and one at the end)
 - Requests that throw an `Exception` or return a HTTP status code greater than `499` are logged as `Error`
   - Swallow the `Exception` to avoid duplicate logging of `Exception`
+
+## Running on a non-Windows platform
+
+`Application Insights` is persisting telemetry to a temporary directory so that it can retry sending them in case of failure. This works out of the box on `Windows` but requires some configuration on `macOS` and `Linux`:
+
+- Create a directory to hold the telemetry
+  - The user running `Kestrel` needs to have write access to this directory
+- Set the configuration key `ApplicationInsights:TelemetryChannel:StorageFolder` with the path of the directory
+
+## Docker
+
+Navigate to `src/Logging.Web/` and run:
+
+```posh
+docker build -t logging-demo:1 ./
+```
+
+```posh
+docker run `
+  -d `
+  --rm `
+  -p 8080:80 `
+  -e "ASPNETCORE_ENVIRONMENT=Development" `
+  -e "ApplicationInsights:InstrumentationKey=<instrumentation-key>" `
+  -e "ApplicationInsights:TelemetryChannel:StorageFolder=/tmp/app-logs" `
+  logging-demo:1
+```
 
 ## Results in Application Insights portal
 

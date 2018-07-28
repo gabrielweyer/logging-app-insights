@@ -1,12 +1,31 @@
+using System.Runtime.InteropServices;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Logging.Web.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddConfigurableApplicationInsightsTelemetry(this IServiceCollection services, IConfiguration configuration)
+        public static void AddConfigurableApplicationInsightsTelemetry(
+            this IServiceCollection services,
+            ILogger logger,
+            IConfiguration configuration)
         {
+            var telemetryChannelStorageFolder = configuration["ApplicationInsights:TelemetryChannel:StorageFolder"];
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
+                !string.IsNullOrWhiteSpace(telemetryChannelStorageFolder))
+            {
+                services.AddSingleton(typeof(ITelemetryChannel),
+                    new ServerTelemetryChannel {StorageFolder = telemetryChannelStorageFolder});
+
+                logger.LogDebug("Configuring Application Insights storage folder with {TelemetryChannelStorageFolder}",
+                    telemetryChannelStorageFolder);
+            }
+
             services.AddApplicationInsightsTelemetry(options =>
             {
                 var applicationVersion = configuration["ApplicationInsights:ApplicationVersion"];

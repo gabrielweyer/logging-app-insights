@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -82,16 +83,18 @@ namespace Logging.Web.Tests.Extensions
 
         class ConfigurableStartup
         {
-            private IConfiguration _configuration;
+            private readonly ILogger<ConfigurableStartup> _logger;
+            private readonly IConfiguration _configuration;
 
-            public ConfigurableStartup(IConfiguration configuration)
+            public ConfigurableStartup(ILogger<ConfigurableStartup> logger, IConfiguration configuration)
             {
+                _logger = logger;
                 _configuration = configuration;
             }
 
             public void ConfigureServices(IServiceCollection services)
             {
-                services.AddConfigurableApplicationInsightsTelemetry(_configuration);
+                services.AddConfigurableApplicationInsightsTelemetry(_logger, _configuration);
             }
 
             public void Configure(IApplicationBuilder app)
