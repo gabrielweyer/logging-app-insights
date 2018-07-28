@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
+using Logging.Web.Telemetry;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +58,8 @@ namespace Logging.Web.Extensions
                     options.DeveloperMode = developerMode;
                 }
             });
+
+            TelemetryConfiguration.Active.TelemetryInitializers.Add(new ServiceNameInitializer());
         }
     }
 }
