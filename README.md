@@ -65,7 +65,7 @@ I wrote an [extension method](src/Logging.Web/Extensions/ServiceCollectionExtens
 
 ## Request logging middleware
 
-I disabled the built-in request logging by setting the `Microsoft` minimum level to `Warning` and replaced it by `RequestLoggingMiddleware`.
+I disabled the built-in request logging by setting the `Microsoft` minimum level to `Warning` and replaced it by [RequestLoggingMiddleware](src/Logging.Web/Middleware/RequestLoggingMiddleware.cs).
 
 - Emit a single `Information` event when the request completes instead of two (one at the beginning and one at the end)
 - Requests that throw an `Exception` or return a HTTP status code greater than `499` are logged as `Error`
