@@ -1,12 +1,12 @@
-﻿using System;
-using Logging.Web.Extensions;
+﻿using Logging.Downstream.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Logging.Web
+namespace Logging.Downstream
 {
     public class Startup
     {
@@ -23,10 +23,7 @@ namespace Logging.Web
         {
             _logger.LogDebug("Configuring services");
 
-            services
-                .AddConfigurableApplicationInsightsTelemetry(_logger, _configuration)
-                .AddHttpClient("downstream",
-                    client => client.BaseAddress = new Uri(_configuration["DownstreamService:BaseAddress"]));
+            services.AddConfigurableApplicationInsightsTelemetry(_logger, _configuration);
 
             services
                 .AddMvc()

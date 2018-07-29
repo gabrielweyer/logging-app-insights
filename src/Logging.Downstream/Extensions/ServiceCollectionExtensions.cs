@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Logging.Web.Telemetry;
+using Logging.Downstream.Telemetry;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel;
@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Logging.Web.Extensions
+namespace Logging.Downstream.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConfigurableApplicationInsightsTelemetry(
+        public static void AddConfigurableApplicationInsightsTelemetry(
             this IServiceCollection services,
             ILogger logger,
             IConfiguration configuration)
@@ -50,8 +50,6 @@ namespace Logging.Web.Extensions
             });
 
             TelemetryConfiguration.Active.TelemetryInitializers.Add(new ServiceNameInitializer());
-
-            return services;
         }
 
         private static void ConfigureTelemetryChannelStorageFolder(this IServiceCollection services, ILogger logger,

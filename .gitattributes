@@ -1,2 +1,2 @@
-docs/postman/Local.postman_environment.json eol=lf
-docs/postman/Logging.postman_collection.json eol=lf
+docs/postman/*.json eol=lf
+
