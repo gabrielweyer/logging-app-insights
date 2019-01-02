@@ -1,11 +1,11 @@
-# ASP.NET Core 2.1 + Serilog + Application Insights
+# ASP.NET Core 2.2 + Serilog + Application Insights
 
 I wanted to demonstrate the power of [structured logging][structured-logging] and illustrate some of the goodness of `Application Insights` (such as [correlation across services][correlation] and [application map][application-map]).
 
 ## Pre-requisites
 
 - [An Application Insights resource][create-application-insights]
-- [.NET Core SDK 2.1.302][dotnet-core-sdk]
+- [.NET Core SDK 2.2.100][dotnet-core-sdk]
 - [Docker][docker] (optional)
 
 ## Guiding principles
