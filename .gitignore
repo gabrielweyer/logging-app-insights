@@ -2,6 +2,10 @@
 
 .idea/
 
+# Visual Studio
+
+.vs/
+
 # Compilation detritus
 
 bin/
